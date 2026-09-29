@@ -1,0 +1,341 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Loan Risk Predictor
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'predictor/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+    <header class="hero">
+
+        <div class="hero-content">
+
+            <span class="tag">
+                BIT246 · MACHINE LEARNING
+            </span>
+
+            <h1>
+                Loan Repayment
+                <span>Prediction</span>
+            </h1>
+
+            <p>
+                Random Forest Financial
+                Risk Assessment
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+
+        <!-- INPUT CARD -->
+
+        <section class="card">
+
+            <div class="card-heading">
+
+                <p class="small-title">
+                    LOAN ASSESSMENT
+                </p>
+
+                <h2>
+                    Applicant Information
+                </h2>
+
+                <p>
+                    Enter the applicant's
+                    financial information
+                    below.
+                </p>
+
+            </div>
+
+
+            <form
+                method="POST"
+                class="loan-form"
+            >
+
+                {% csrf_token %}
+
+
+                <div class="form-group">
+
+                    <label
+                        for="{{ form.revenue.id_for_label }}"
+                    >
+                        Annual Income ($)
+                    </label>
+
+                    {{ form.revenue }}
+
+                    {% if form.revenue.errors %}
+
+                        <div class="error">
+
+                            {{ form.revenue.errors }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label
+                        for="{{ form.dti_n.id_for_label }}"
+                    >
+                        Debt-to-Income Ratio
+                    </label>
+
+                    {{ form.dti_n }}
+
+                    {% if form.dti_n.errors %}
+
+                        <div class="error">
+
+                            {{ form.dti_n.errors }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="predict-button"
+                >
+
+                    Analyse Loan
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- RESULT CARD -->
+
+        <section class="card result-card">
+
+
+            {% if result %}
+
+
+                <p class="small-title">
+                    MODEL PREDICTION
+                </p>
+
+
+                <h2>
+                    Assessment Result
+                </h2>
+
+
+                {% if result.prediction == 0 %}
+
+                    <div class="status repay">
+
+                        {{ result.outcome }}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="status default">
+
+                        {{ result.outcome }}
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="metrics">
+
+
+                    <div class="metric">
+
+                        <span>
+                            Repayment
+                            Probability
+                        </span>
+
+                        <strong>
+
+                            {{ result.repayment_probability }}%
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>
+                            Default
+                            Probability
+                        </span>
+
+                        <strong>
+
+                            {{ result.default_probability }}%
+
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="probability-section">
+
+
+                    <div class="bar-heading">
+
+                        <span>
+                            Repayment
+                        </span>
+
+                        <span>
+
+                            {{ result.repayment_probability }}%
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-fill repayment-bar"
+                            style="width: {{ result.repayment_probability }}%;"
+                        >
+                        </div>
+
+                    </div>
+
+
+                    <div class="bar-heading">
+
+                        <span>
+                            Default
+                        </span>
+
+                        <span>
+
+                            {{ result.default_probability }}%
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-fill default-bar"
+                            style="width: {{ result.default_probability }}%;"
+                        >
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="disclaimer">
+
+                    <strong>
+                        Educational demonstration
+                    </strong>
+
+                    <p>
+                        This prediction is generated
+                        by a Random Forest model and
+                        should not be used as the sole
+                        basis for a real lending
+                        decision.
+                    </p>
+
+                </div>
+
+
+            {% else %}
+
+
+                <div class="empty-result">
+
+                    <div class="circle">
+                        ML
+                    </div>
+
+                    <h2>
+                        Ready to Analyse
+                    </h2>
+
+                    <p>
+                        Enter the applicant
+                        information and select
+                        Analyse Loan to generate
+                        a prediction.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            BIT246 Object Oriented Programming
+            · Random Forest Loan Prediction
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

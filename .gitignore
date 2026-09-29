@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+db.sqlite3
+staticfiles/
+.ipynb_checkpoints/
+
+# Large ML files
+data/loan_dataset.csv
+models/random_forest_model.pkl
